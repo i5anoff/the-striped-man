@@ -9,11 +9,9 @@ class Model extends THREE.Object3D {
 		// params
 		this.startColor = '#F2A700';
 		this.endColor = '#AE3060';
-		this.invert = false;
 		this.lineWidth = 4;
 		this.margin = 50;
 		this.scaleRatio = 60;
-		this.soundEffect = true;
 		
 
 		// material
@@ -39,7 +37,6 @@ class Model extends THREE.Object3D {
 
 			// mesh
 			this.mesh = new THREE.Mesh( geometry, this.material );
-			// this.mesh.rotation.y = Math.PI;
 			this.mesh.scale.x = this.scaleRatio;
 			this.mesh.scale.y = this.scaleRatio;
 			this.mesh.scale.z = this.scaleRatio;
@@ -75,15 +72,13 @@ class Model extends THREE.Object3D {
 			this.material.uniforms.margin.value = this.margin / this.scaleRatio;
 		});
 
-		window.gui.add(this, 'soundEffect');
-
 	}
 
 	update() {
 
 		this.material.uniforms.iGlobalTime.value += 0.005;
 
-		if (window.app && !window.app.soundManager.pause && this.soundEffect) {
+		if (window.app && !window.app.soundManager.pause && window.app.soundEffect) {
 			this.material.uniforms.margin.value = this.margin / this.scaleRatio * (window.app.soundManager.voice * 0.4 + 1);
 		} else {
 			this.material.uniforms.margin.value = this.margin / this.scaleRatio;

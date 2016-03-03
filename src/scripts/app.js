@@ -1,4 +1,5 @@
 import SoundManager from './managers/soundManager';
+import Background from './modules/background';
 import Model from './modules/model';
 
 WAGNER.vertexShadersPath = '/Wagner/vertex-shaders';
@@ -19,6 +20,7 @@ class App {
 		this.useNoise = false;
 		this.useVignette = false;
 		this.useBloom = false;
+		this.soundEffect = true;
 		this.gui = window.gui = new dat.GUI();
 
 		// wagner passes
@@ -58,16 +60,15 @@ class App {
 	init() {
 
 		this.scene = new THREE.Scene();
-		// this.scene.fog = new THREE.Fog( this.backgroundColor, 0.1, 100 );
 
 		this.renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
 		this.renderer.setClearColor(this.backgroundColor, 1);
 		this.renderer.autoClearColor = true;
 		
-		this.camera = new THREE.PerspectiveCamera(45, this.wWidth/this.wHeight, 1, 2000);
+		this.camera = new THREE.PerspectiveCamera(45, this.wWidth/this.wHeight, 1, 4000);
 		this.camera.position.x = -200;
 		this.camera.position.y = 100;
-		this.camera.position.z = 700;
+		this.camera.position.z = 1000;
 
 		this.renderer.setSize(this.wWidth, this.wHeight);
 
@@ -84,9 +85,13 @@ class App {
 
 		this.addControls();
 		
-		this.model = new Model({ radius:150 });
+		this.background = new Background();
+		this.model = new Model();
 
+		this.scene.add( this.background );
 		this.scene.add( this.model );
+
+		this.gui.add(this, 'soundEffect');
 
 		this.soundManager = new SoundManager();
 
@@ -114,7 +119,7 @@ class App {
 		this.controls.noRotate = false;
 		this.controls.dynamicDampingFactor = .15;
 		this.controls.minDistance = 0;
-		this.controls.maxDistance = 1500;
+		this.controls.maxDistance = 1000;
 		// this.controls.addEventListener('change', this.animate);
 
 	}
@@ -139,6 +144,7 @@ class App {
 		
 		this.composer.toScreen();
 
+		this.background.update();
 		this.model.update();
 		this.soundManager.update();
 

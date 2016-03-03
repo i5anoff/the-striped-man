@@ -33,7 +33,7 @@ class Model extends THREE.Object3D {
 		});
 
 		this.loader = new THREE.JSONLoader();
-		this.loader.load( '/assets/LeePerrySmith.js', ( geometry ) => {
+		this.loader.load( '../../assets/LeePerrySmith.js', ( geometry ) => {
 
 			// mesh
 			this.mesh = new THREE.Mesh( geometry, this.material );
